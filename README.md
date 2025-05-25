@@ -41,7 +41,13 @@ La documentación propia de la aplicación se encuentra en el siguiente enlace:
 Este proyecto es de código abierto y está disponible bajo la Licencia MIT.
 
 ## Contexto del Proyecto
-El proyecto se realiza como trabajo de Proyecto Integrado de la Formación Profesional Superior de Administración de Sistemas Informáticos en Red (ASIR) para el IES La Marisma. 
+El proyecto se realiza como trabajo de Proyecto Integrado de la Formación Profesional Superior de Administración de Sistemas Informáticos en Red (ASIR) para el IES La Marisma.
+
+La documentación sobre el proyecto se puede encontrar en el siguiente enlace:
+
+- [Documentación Proyecto Integrado](https://github.com/Dfauben/Proyecto-Integrado-ASIR)
+
+<br>
 
 **Autor:** David Faustino Benitez  
 **Curso:** 2024/2025
