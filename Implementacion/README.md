@@ -3,8 +3,6 @@
 
 # Documentación de la Aplicación PHP - Agenda de Contactos
 
-
-
 ## Objetivo de la Aplicación
 Esta aplicación PHP es una agenda de contactos que forma parte de un proyecto mayor de simulación de un proceso de CI/CD desarrollado como parte del Proyecto Integrado de la Formación Profesional Superior en Administración de Sistemas Informáticos en Red (FP ASIR). El objetivo principal es permitir la gestión sencilla y eficiente de contactos personales mediante una interfaz web.
 
@@ -13,13 +11,71 @@ La aplicación permite a los usuarios agregar, editar, eliminar y visualizar con
 
 La interfaz web incluye:
 - Listado de contactos con foto, nombre, teléfono y email.
+
+    ![](/img/app_front.png)
+
+    <br>
+
 - Formularios para agregar y editar contactos, con soporte para subir imágenes.
+
+    ![](/img/app_agregar.png)
+
+    <br>
+
+    ![](/img/app_editar.png)
+
+    <br>
+
 - Funcionalidad para eliminar contactos.
+
+    ![](/img/app_eliminar.png)
+
+    <br>
+
 - Generación automática de contraseñas seguras mediante AJAX.
+
+    ![](/img/app_pass.png)
+
+    <br>
+
 - Galería de imágenes de los contactos.
+
+    ![](/img/app_gallery.png)
+
+    <br>
+
 - Vista previa de imágenes al hacer clic en las fotos de los contactos.
 
+    ![](/img/app_imgpreview.png)
+
+    <br>
+
 La lógica del servidor está implementada en PHP, utilizando archivos JSON para el almacenamiento de datos y AJAX para las operaciones dinámicas.
+
+### Estructura de Directorios y Archivos
+
+La estructura de directorios y archivos de la aplicación es la siguiente:
+
+```
+Implementacion/Aplicacion/
+├── .htaccess.html              # Archivo de configuración para el servidor web
+├── changelog.txt               # Registro de cambios en formato texto
+├── funciones.php               # Funciones backend principales para manejo de contactos
+├── styles.css                  # Estilos CSS para la aplicación
+├── data/
+│   └── contactos.json          # Archivo JSON que almacena los datos de los contactos
+├── uploads/
+│   └── <FOTOS>                 # Carpeta con imágenes subidas por los usuarios
+└── vistas/
+    ├── agregar.php                     # Vista para agregar un nuevo contacto
+    ├── editar_contacto.php             # Vista para editar un contacto existente
+    ├── eliminar.php                    # Vista para eliminar un contacto
+    ├── generar_password_ajax.php       # Script para generar contraseñas vía AJAX
+    ├── index.php                       # Vista principal que lista los contactos
+    ├── obtener_contacto.php            # Script para obtener datos de un contacto específico
+    └── assets/
+        └── default-avatar.png          # Imagen por defecto para contactos sin foto
+```
 
 ### Explicación del código
 
