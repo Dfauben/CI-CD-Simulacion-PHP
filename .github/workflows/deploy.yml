@@ -27,6 +27,10 @@ jobs:
 
       - name: Run Ansible playbook to deploy on Kubernetes node
         run: |
-          ansible-playbook Implementacion/Ansible/playbooks/configurar_cluster.yml \
-            -i Implementacion/infraestructura/inventario.ini \
+          echo "${{ secrets.ANSIBLE_VAULT_PASS }}" > vault_pass.txt
+          export ANSIBLE_CONFIG=Implementacion/Ansible/ansible.cfg
+          ansible-playbook -i Implementacion/Ansible/inventory.ini \
+            Implementacion/Ansible/playbooks/configurar_cluster.yml \
+            --vault-password-file vault_pass.txt \
+            -e @Implementacion/Ansible/secrets.yml \
             -e "version=${{ env.VERSION }} docker_username=${{ secrets.DOCKER_USERNAME }}"
