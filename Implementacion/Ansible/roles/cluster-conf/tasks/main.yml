@@ -12,17 +12,17 @@
     port: 30000:32767
     proto: tcp
 
-- name: Crear namespace "CICD" (si no existe)
-  shell: kubectl get namespace CICD || kubectl create namespace CICD
+- name: Crear namespace "cicd" (si no existe)
+  shell: kubectl get namespace cicd || kubectl create namespace cicd
 
 - name: Marcar namespace como creado (bandera local)
   file:
-    path: /tmp/k8s_namespace_CICD_created
+    path: /tmp/k8s_namespace_cicd_created
     
 - name: Deploy PHP app Deployment
   kubernetes.core.k8s:
     state: present
-    namespace: CICD
+    namespace: cicd
     definition:
       apiVersion: apps/v1
       kind: Deployment
@@ -55,7 +55,7 @@
 - name: Deploy PHP app Service (NodePort)
   kubernetes.core.k8s:
     state: present
-    namespace: CICD
+    namespace: cicd
     definition:
       apiVersion: v1
       kind: Service
