@@ -25,6 +25,9 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/agenda:${{ env.VERSION }} -f Implementacion/Aplicacion/Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/agenda:${{ env.VERSION }}
 
+      - name: Create vault password file
+        run: echo "${{ secrets.ANSIBLE_VAULT_PASS }}" > vault_pass.txt
+
       - name: Run Ansible playbook to deploy on Kubernetes node
         run: |
           echo "${{ secrets.ANSIBLE_VAULT_PASS }}" > vault_pass.txt
