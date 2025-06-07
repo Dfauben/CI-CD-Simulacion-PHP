@@ -10,9 +10,6 @@ COPY . /var/www/html/
 # Enable Apache mod_rewrite for URL rewriting if needed
 RUN a2enmod rewrite
 
-# Install required PHP extensions (if any)
-RUN docker-php-ext-install json
-
 # Set permissions for uploads directory
 RUN chown -R www-data:www-data /var/www/html/uploads
 
