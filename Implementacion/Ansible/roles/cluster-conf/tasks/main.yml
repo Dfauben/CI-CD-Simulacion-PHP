@@ -1,31 +1,73 @@
 ---
-- hosts: 192.168.1.2
-  become: yes
-  vars:
-    docker_username: "{{ docker_username }}"
-    version: "{{ version }}"
+- name: Asegurar que kubectl está disponible
+  file:
+    path: /usr/local/bin/kubectl
+    state: link
+    src: /var/lib/rancher/k3s/data/*/bin/kubectl
+  ignore_errors: yes
 
-  tasks:
-    - name: Asegurar que kubectl está disponible
-      file:
-        path: /usr/local/bin/kubectl
-        state: link
-        src: /var/lib/rancher/k3s/data/*/bin/kubectl
-      ignore_errors: yes
+- name: Asegurar que el puerto 30000-32767 está abierto
+  ufw:
+    rule: allow
+    port: 30000:32767
+    proto: tcp
 
-    - name: Asegurar que el puerto 30000-32767 está abierto
-      ufw:
-        rule: allow
-        port: 30000:32767
-        proto: tcp
+- name: Crear namespace "CICD" (si no existe)
+  shell: kubectl get namespace CICD || kubectl create namespace CICD
 
-    - name: Crear namespace "CICD" (si no existe)
-      shell: kubectl get namespace CICD || kubectl create namespace CICD
+- name: Marcar namespace como creado (bandera local)
+  file:
+    path: /tmp/k8s_namespace_CICD_created
+    
+- name: Deploy PHP app Deployment
+  kubernetes.core.k8s:
+    state: present
+    namespace: CICD
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: php-agenda
+        labels:
+          app: php-agenda
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: php-agenda
+        template:
+          metadata:
+            labels:
+              app: php-agenda
+          spec:
+            containers:
+              - name: php-agenda
+                image: "{{ docker_username }}/agenda:{{ version }}"
+                ports:
+                  - containerPort: 80
+                readinessProbe:
+                  httpGet:
+                    path: /
+                    port: 80
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
 
-    - name: Marcar namespace como creado (bandera local)
-      file:
-        path: /tmp/k8s_namespace_CICD_created
-        state: touch
+- name: Deploy PHP app Service (NodePort)
+  kubernetes.core.k8s:
+    state: present
+    namespace: CICD
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: php-agenda-service
+      spec:
+        type: NodePort
+        selector:
+          app: php-agenda
+        ports:
+          - protocol: TCP
+            port: 80
+            targetPort: 80
+            nodePort: 30080
 
-  roles:
-    - deploy_app
