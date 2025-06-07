@@ -2,4 +2,4 @@
   hosts: k8s
   become: true
   roles:
-    - cluster_config
+    - cluster_conf
