@@ -7,19 +7,15 @@ WORKDIR /var/www/html
 # Copy application files
 COPY . /var/www/html/
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+# Copy custom Apache config to enable access
+COPY custom-access.conf /etc/apache2/conf-available/custom-access.conf
+
+# Enable Apache mod_rewrite and the custom config
+RUN a2enmod rewrite && \
+    a2enconf custom-access
 
 # Install PHP extensions
 RUN docker-php-ext-install fileinfo
-
-# Add Apache config to allow access
-RUN echo '<Directory /var/www/html>\n\
-    Options Indexes FollowSymLinks\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' > /etc/apache2/conf-available/custom-access.conf && \
-    a2enconf custom-access
 
 # Expose port 80
 EXPOSE 80
