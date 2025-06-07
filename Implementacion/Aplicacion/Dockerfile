@@ -13,8 +13,8 @@ RUN a2enmod rewrite
 # Install PHP extensions
 RUN docker-php-ext-install fileinfo
 
-# Set permissions for uploads directory
-RUN chown -R www-data:www-data /var/www/html/uploads
+# Create uploads directory and set permissions
+RUN mkdir -p /var/www/html/uploads && chown -R www-data:www-data /var/www/html/uploads
 
 # Expose port 80
 EXPOSE 80
