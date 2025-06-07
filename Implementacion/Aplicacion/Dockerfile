@@ -16,6 +16,14 @@ RUN docker-php-ext-install fileinfo
 # Create uploads directory and set permissions
 RUN mkdir -p /var/www/html/uploads && chown -R www-data:www-data /var/www/html/uploads
 
+# Add Apache config to allow access
+RUN echo '<Directory /var/www/html>\n\
+    Options Indexes FollowSymLinks\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>' > /etc/apache2/conf-available/custom-access.conf && \
+    a2enconf custom-access
+
 # Expose port 80
 EXPOSE 80
 
