@@ -1,5 +1,5 @@
 ---
-- hosts: k8s-nodes
+- hosts: k8s
   become: yes
   vars:
     docker_username: "{{ docker_username }}"
