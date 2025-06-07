@@ -22,7 +22,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/agenda:${{ env.VERSION }} -f Implementacion/Aplicacion/Dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/agenda:${{ env.VERSION }} -f Implementacion/Aplicacion/Dockerfile Implementacion/Aplicacion
           docker push ${{ secrets.DOCKER_USERNAME }}/agenda:${{ env.VERSION }}
 
       - name: Create vault password file

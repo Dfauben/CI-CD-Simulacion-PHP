@@ -13,9 +13,6 @@ RUN a2enmod rewrite
 # Install PHP extensions
 RUN docker-php-ext-install fileinfo
 
-# Create uploads directory and set permissions
-RUN mkdir -p /var/www/html/uploads && chown -R www-data:www-data /var/www/html/uploads
-
 # Add Apache config to allow access
 RUN echo '<Directory /var/www/html>\n\
     Options Indexes FollowSymLinks\n\
