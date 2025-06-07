@@ -27,6 +27,6 @@ jobs:
 
       - name: Run Ansible playbook to deploy on Kubernetes node
         run: |
-          ansible-playbook Implementacion/infraestructura/playbooks/configurar_cluster.yml \
+          ansible-playbook Implementacion\Ansible\playbooks\configurar_cluster.yml \
             -i Implementacion/infraestructura/inventario.ini \
             -e "version=${{ env.VERSION }} docker_username=${{ secrets.DOCKER_USERNAME }}"
