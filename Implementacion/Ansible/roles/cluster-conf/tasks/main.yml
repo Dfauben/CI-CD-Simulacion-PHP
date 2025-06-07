@@ -18,11 +18,10 @@
     state: present
   become: yes
 
-- name: Instalar librería python kubernetes
-  pip:
-    name: kubernetes
-    executable: pip3
-  become: yes
+- name: Instalar python3-kubernetes con apt
+  apt:
+    name: python3-kubernetes
+    state: present
 
 - name: Deploy PHP app Deployment
   kubernetes.core.k8s:
