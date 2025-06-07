@@ -1,0 +1,23 @@
+- name: Asegurar que kubectl está disponible
+  file:
+    path: /usr/local/bin/kubectl
+    state: link
+    src: /var/lib/rancher/k3s/data/*/bin/kubectl
+  ignore_errors: yes
+
+- name: Asegurar que el puerto 30000-32767 está abierto
+  ufw:
+    rule: allow
+    port: 30000:32767
+    proto: tcp
+
+- name: Crear namespace "CD-CD" (si no existe)
+  shell: |
+    kubectl create namespace CICD
+  args:
+    creates: /tmp/k8s_namespace_testing_created
+
+- name: Marcar namespace como creado (bandera local)
+  file:
+    path: /tmp/k8s_namespace_CICD_created
+    state: touch

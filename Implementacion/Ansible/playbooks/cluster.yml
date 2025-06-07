@@ -1,0 +1,5 @@
+- name: Configurar clúster Kubernetes tras la instalación de k3s
+  hosts: k8s
+  become: true
+  roles:
+    - cluster_config

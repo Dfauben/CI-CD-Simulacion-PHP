@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agenda-{{ version }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agenda
+      version: "{{ version }}"
+  template:
+    metadata:
+      labels:
+        app: agenda
+        version: "{{ version }}"
+    spec:
+      containers:
+      - name: agenda
+        image: docker.io/${{ secrets.DOCKER_USERNAME }}/agenda:{{ version }}
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agenda-svc-{{ version }}
+spec:
+  selector:
+    app: agenda
+    version: "{{ version }}"
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: {{ nodeport }}
