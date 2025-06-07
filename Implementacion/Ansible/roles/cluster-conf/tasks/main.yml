@@ -12,10 +12,17 @@
     port: 30000:32767
     proto: tcp
 
-- name: Instalar paquete python kubernetes
-  ansible.builtin.pip:
+- name: Instalar pip para python3
+  apt:
+    name: python3-pip
+    state: present
+  become: yes
+
+- name: Instalar librería python kubernetes
+  pip:
     name: kubernetes
-    executable: /usr/bin/pip3
+    executable: pip3
+  become: yes
 
 - name: Deploy PHP app Deployment
   kubernetes.core.k8s:
