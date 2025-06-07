@@ -1,23 +1,31 @@
-- name: Asegurar que kubectl está disponible
-  file:
-    path: /usr/local/bin/kubectl
-    state: link
-    src: /var/lib/rancher/k3s/data/*/bin/kubectl
-  ignore_errors: yes
+---
+- hosts: k8s-nodes
+  become: yes
+  vars:
+    docker_username: "{{ docker_username }}"
+    version: "{{ version }}"
 
-- name: Asegurar que el puerto 30000-32767 está abierto
-  ufw:
-    rule: allow
-    port: 30000:32767
-    proto: tcp
+  tasks:
+    - name: Asegurar que kubectl está disponible
+      file:
+        path: /usr/local/bin/kubectl
+        state: link
+        src: /var/lib/rancher/k3s/data/*/bin/kubectl
+      ignore_errors: yes
 
-- name: Crear namespace "CD-CD" (si no existe)
-  shell: |
-    kubectl create namespace CICD
-  args:
-    creates: /tmp/k8s_namespace_testing_created
+    - name: Asegurar que el puerto 30000-32767 está abierto
+      ufw:
+        rule: allow
+        port: 30000:32767
+        proto: tcp
 
-- name: Marcar namespace como creado (bandera local)
-  file:
-    path: /tmp/k8s_namespace_CICD_created
-    state: touch
+    - name: Crear namespace "CICD" (si no existe)
+      shell: kubectl get namespace CICD || kubectl create namespace CICD
+
+    - name: Marcar namespace como creado (bandera local)
+      file:
+        path: /tmp/k8s_namespace_CICD_created
+        state: touch
+
+  roles:
+    - deploy_app

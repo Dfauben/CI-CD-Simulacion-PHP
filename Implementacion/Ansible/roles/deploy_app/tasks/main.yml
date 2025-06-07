@@ -1,0 +1,52 @@
+---
+- name: Deploy PHP app Deployment
+  kubernetes.core.k8s:
+    state: present
+    namespace: CICD
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: php-agenda
+        labels:
+          app: php-agenda
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: php-agenda
+        template:
+          metadata:
+            labels:
+              app: php-agenda
+          spec:
+            containers:
+              - name: php-agenda
+                image: "{{ docker_username }}/agenda:{{ version }}"
+                ports:
+                  - containerPort: 80
+                readinessProbe:
+                  httpGet:
+                    path: /
+                    port: 80
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+
+- name: Deploy PHP app Service (NodePort)
+  kubernetes.core.k8s:
+    state: present
+    namespace: CICD
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: php-agenda-service
+      spec:
+        type: NodePort
+        selector:
+          app: php-agenda
+        ports:
+          - protocol: TCP
+            port: 80
+            targetPort: 80
+            nodePort: 30080

@@ -1,4 +1,4 @@
-name: Deploy app on push to testing
+name: Despliegue de la app
 
 on:
   push:
@@ -25,11 +25,8 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/agenda:${{ env.VERSION }} -f Implementacion/Aplicacion/Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/agenda:${{ env.VERSION }}
 
-      - name: Generate deployment manifest
+      - name: Run Ansible playbook to deploy on Kubernetes node
         run: |
-          mkdir -p k8s
-          sed "s/{{ version }}/${{ env.VERSION }}/g; s/{{ nodeport }}/30${{ env.VERSION }}/g" \
-            Implementacion/Kubernetes/deployment-template.yml > Implementacion/Kubernetes/servicios/deployment-${{ env.VERSION }}.yml
-
-      - name: Apply manifest (local runner ejecuta kubectl)
-        run: kubectl apply -f Implementacion/Kubernetes/servicios/deployment-${{ env.VERSION }}.yml
+          ansible-playbook Implementacion/infraestructura/playbooks/configurar_cluster.yml \
+            -i Implementacion/infraestructura/inventario.ini \
+            -e "version=${{ env.VERSION }} docker_username=${{ secrets.DOCKER_USERNAME }}"

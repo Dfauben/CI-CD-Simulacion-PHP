@@ -7,16 +7,16 @@ spec:
   selector:
     matchLabels:
       app: agenda
-      version: "{{ version }}"
+      version: {{ version }}
   template:
     metadata:
       labels:
         app: agenda
-        version: "{{ version }}"
+        version: {{ version }}
     spec:
       containers:
       - name: agenda
-        image: docker.io/${{ secrets.DOCKER_USERNAME }}/agenda:{{ version }}
+        image: docker.io/{{ docker_username }}/agenda:{{ version }}
         ports:
         - containerPort: 80
 ---
@@ -27,7 +27,7 @@ metadata:
 spec:
   selector:
     app: agenda
-    version: "{{ version }}"
+    version: {{ version }}
   type: NodePort
   ports:
   - port: 80
