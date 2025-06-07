@@ -1,0 +1,5 @@
+- name: Aprovisionamiento del nodo Kubernetes
+  hosts: k8s
+  become: true
+  roles:
+    - k3s

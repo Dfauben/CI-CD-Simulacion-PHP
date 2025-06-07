@@ -1,0 +1,40 @@
+- name: Actualizar sistema
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Instalar dependencias necesarias
+  apt:
+    name: [curl, sudo, openssh-server]
+    state: present
+
+- name: Instalar k3s
+  shell: |
+    curl -sfL https://get.k3s.io | sh -
+  args:
+    creates: /usr/local/bin/k3s
+
+- name: Crear carpeta .kube en el home del usuario
+  file:
+    path: /home/david-cliente1/.kube
+    state: directory
+    owner: david-cliente1
+    group: david-cliente1
+    mode: '0755'
+
+- name: Copiar configuración de kubectl a ~/.kube/config
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: /home/david-cliente1/.kube/config
+    remote_src: yes
+    owner: david-cliente1
+    group: david-cliente1
+    mode: '0600'
+
+- name: Añadir alias de kubectl a .bashrc
+  lineinfile:
+    path: /home/david-cliente1/.bashrc
+    line: "alias kubectl='sudo k3s kubectl'"
+    create: yes
+    owner: david-cliente1
+    group: david-cliente1
