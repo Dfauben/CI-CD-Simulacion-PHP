@@ -7,11 +7,17 @@ WORKDIR /var/www/html
 # Copy application files
 COPY . /var/www/html/
 
-# Copy custom Apache config to enable access
-COPY ./custom-acces.conf /etc/apache2/conf-available/custom-access.conf
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
-# Enable Apache mod_rewrite and the custom config
-RUN a2enmod rewrite && \
+# Copy custom Apache config to set DocumentRoot and allow access
+RUN echo '<Directory /var/www/html/vistas>\n\
+    Options Indexes FollowSymLinks\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>\n\
+\n\
+DocumentRoot /var/www/html/vistas' > /etc/apache2/conf-available/custom-access.conf && \
     a2enconf custom-access
 
 # Install PHP extensions
