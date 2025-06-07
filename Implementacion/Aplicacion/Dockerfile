@@ -8,7 +8,7 @@ WORKDIR /var/www/html
 COPY . /var/www/html/
 
 # Copy custom Apache config to enable access
-COPY Implementacion\Aplicacion\custom-acces.conf /etc/apache2/conf-available/custom-access.conf
+COPY ./custom-acces.conf /etc/apache2/conf-available/custom-access.conf
 
 # Enable Apache mod_rewrite and the custom config
 RUN a2enmod rewrite && \
