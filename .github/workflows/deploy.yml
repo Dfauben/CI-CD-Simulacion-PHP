@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir -p k8s
           sed "s/{{ version }}/${{ env.VERSION }}/g; s/{{ nodeport }}/30${{ env.VERSION }}/g" \
-            deployment-template.yml > k8s/deployment-${{ env.VERSION }}.yml
+            Implementacion/Kubernetes/deployment-template.yml > Implementacion/Kubernetes/servicios/deployment-${{ env.VERSION }}.yml
 
       - name: Apply manifest (local runner ejecuta kubectl)
-        run: kubectl apply -f k8s/deployment-${{ env.VERSION }}.yml
+        run: kubectl apply -f Implementacion/Kubernetes/servicios/deployment-${{ env.VERSION }}.yml
