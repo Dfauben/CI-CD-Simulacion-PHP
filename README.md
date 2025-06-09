@@ -50,4 +50,4 @@ La documentación sobre el proyecto se puede encontrar en el siguiente enlace:
 <br>
 
 **Autor:** David Faustino Benitez  
-**Curso:** 2024/202
+**Curso:** 2024/2025
