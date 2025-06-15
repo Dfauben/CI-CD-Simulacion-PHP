@@ -7,8 +7,11 @@ on:
 
 jobs:
   deploy:
-    runs-on: proyecto-integrado-asir
-    environment: desarrollo
+    name: Deploy en matriz de runners
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [aws-pi, proyecto-integrado-asir]
 
     steps:
       - name: Checkout repo
